@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>港岳精密扣件｜永續報告書工作台</title>
+<title>ESG Report｜永續報告書工作台</title>
 <style>
   :root {
     --green-900: #144032;
@@ -307,6 +307,11 @@
     z-index: 999;
   }
   .toast.show { opacity: 1; }
+
+  :focus-visible { outline: 3px solid #c48b24; outline-offset: 3px; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--green-800); }
+  .workspace-tools p { margin-bottom: 8px; }
+  @media(max-width:640px) { .container {padding:12px;} .tabs {display:flex;overflow-x:auto;} .tab-btn{white-space:nowrap;} .controls-row{align-items:stretch;} .kpi-value{font-size:1.5rem;} }
 </style>
 </head>
 <body>
@@ -315,9 +320,9 @@
   <div class="header-top">
     <div class="brand">
       <h1>港岳精密扣件工業股份有限公司｜永續報告書工作台</h1>
-      <p>依循 GRI 準則（GRI 1／2／3、305／302、102／103）、AA1000AP、ISSA 5000 與 K5 撰寫規範</p>
+      <p>ESG Report 2.0 · 衝擊評估、內容索引與文字初篩</p>
     </div>
-    <div class="privacy-badge">本機離線運算・不上傳任何資料</div>
+    <div class="privacy-badge">瀏覽器本機處理・輸入資料不送出</div>
   </div>
   <div class="kpi-grid">
     <div class="kpi-card">
@@ -336,7 +341,7 @@
       <div class="kpi-sub" id="kpiGreenwashSub">尚未執行檢查</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">目前可宣稱狀態</div>
+      <div class="kpi-label">內容索引填寫狀態</div>
       <div class="kpi-value" id="kpiClaimStatus">參考</div>
       <div class="kpi-sub" id="kpiClaimSub">尚有內容索引待補</div>
     </div>
@@ -344,6 +349,17 @@
 </header>
 
 <div class="container">
+  <div class="card workspace-tools">
+    <div class="card-title"><span>工作檔案</span><span id="saveStatus" role="status" class="muted">尚未儲存</span></div>
+    <div class="controls-row">
+      <button class="btn btn-primary" id="backupBtn">下載完整備份</button>
+      <button class="btn btn-outline" id="restoreBtn">匯入備份</button>
+      <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+      <button class="btn btn-outline" id="exportChecks">匯出檢查結果</button>
+    </div>
+    <p class="muted">自動保存於此瀏覽器；換裝置或清除瀏覽器資料前，請下載備份。備份含評分、索引、草稿與設定。</p>
+    <details><summary>檢查範圍與資料基準</summary><p class="muted">本工具為港岳 2025 年資料的初篩工作台。內嵌 C8／C10／K5 資料沿用原始檔，尚未核實原始佐證。評分公式是此工作台的方法設定，不代表 GRI 指定公式。內容索引是預設揭露清單，填寫完整不代表符合 GRI 全部要求。文字檢查只涵蓋部分指標與用語，仍需人工審查。</p></details>
+  </div>
   <div class="tabs" role="tablist">
     <button type="button" class="tab-btn active" data-tab="tab1">1. 重大主題評分（C8）</button>
     <button type="button" class="tab-btn" data-tab="tab2">2. GRI 內容索引產生器</button>
@@ -417,10 +433,10 @@
       </div>
       <div class="controls-row">
         <label class="control-group">
-          報告書發布年：
+          準則對照模式：
           <select id="publishYear">
-            <option value="2026">2026 年發布（2025 年度報告：使用 GRI 305／302）</option>
-            <option value="2027">2027 年起發布（2026 年度起：使用 GRI 102／103）</option>
+            <option value="2026">GRI 305／302 對照模式</option>
+            <option value="2027">GRI 102／103 對照模式（需另核適用版本）</option>
           </select>
         </label>
         <label class="control-group">
@@ -465,7 +481,7 @@
         </div>
       </div>
       <p class="muted" style="margin:0 0 10px;">
-        依 <strong>K5 撰寫規範</strong> 偵測禁用絕對用語（100%、全面、碳中和、淨零、零職災、已通過驗證等），並自動核對 <strong>C10</strong> 經核對數據（範疇一 4,938.075、範疇二 10,725.456、合計 15,663.531 tCO2e、再生能源占比 2.05%、員工職傷 6 件／非員工 1 件）。
+        以部分 K5 用語作人工審查提示，並比對可辨識的範疇一、範疇二、排放合計與再生能源占比。原檔 2025 年基準：4,938.075／10,725.456／15,663.531 tCO2e、2.05%。其他數據、年度、單位與佐證需另行確認。
       </p>
       <textarea id="draftTextarea" class="draft-input" placeholder="請貼上報告書文字，或點選右上角「載入 C11 範例」..."></textarea>
     </div>
@@ -711,6 +727,7 @@
 
   // 渲染頁籤 1
   function renderTab1() {
+    const focusState = captureFocus();
     const evaluated = evaluateImpacts();
     const sorted = [...evaluated].sort((a, b) => b.sig - a.sig || b.sev - a.sev);
     const merged = getMergedMaterialTopics(evaluated);
@@ -750,9 +767,10 @@
         <td>${probInput}</td>
         <td><strong>${row.sig.toFixed(2)}</strong></td>
         <td>${statusBadge}</td>
-        <td>${escapeHtml(row.mergedKey)}<br><span class="muted">${escapeHtml(row.gri2026)}</span></td>
+        <td>${escapeHtml(row.mergedKey)}<br><span class="muted">${escapeHtml(document.getElementById("publishYear").value === "2027" ? row.gri2027 : row.gri2026)}</span></td>
       </tr>`;
     }).join("");
+    restoreFocus(focusState);
   }
 
   function renderSvgBarChart(sorted) {
@@ -856,14 +874,16 @@
     if (state.omitted) {
       if (!state.reason) return { valid: false, msg: "已勾選省略，須選省略理由" };
       if (!state.explanation.trim()) return { valid: false, msg: "已勾選省略，須填省略說明" };
-      return { valid: true, msg: "通過（已具正當省略）" };
+      return { valid: true, msg: "欄位完整（省略理由待審）" };
     } else {
+      if (/^範例/.test(state.location.trim())) return { valid: false, msg: "範例頁碼，待替換" };
       if (!state.location.trim()) return { valid: false, msg: "未省略須填寫位置（頁碼／網址）" };
-      return { valid: true, msg: "通過" };
+      return { valid: true, msg: "欄位完整（內容待審）" };
     }
   }
 
   function renderTab2() {
+    const focusState = captureFocus();
     const rows = buildGriIndexRows();
     const filterErr = document.getElementById("filterErrorsOnly").checked;
     let issueCount = 0;
@@ -892,21 +912,13 @@
     const kpiClaim = document.getElementById("kpiClaimStatus");
     const kpiClaimSub = document.getElementById("kpiClaimSub");
 
-    if (issueCount === 0 && rows.length > 0) {
-      box.classList.remove("warn");
-      titleEl.textContent = "使用聲明：已依循 GRI 準則（in accordance）";
-      textEl.textContent = "「港岳精密扣件工業股份有限公司已依循 GRI 準則報導 2025 年 1 月 1 日至 2025 年 12 月 31 日期間之資訊。」（全部項目均通過檢核）";
-      kpiClaim.textContent = "依循";
-      kpiClaimSub.textContent = "內容索引全部通過檢核";
-    } else {
-      box.classList.add("warn");
-      titleEl.textContent = `使用聲明：參考 GRI 準則（with reference）— 尚有 ${issueCount} 項待修正`;
-      textEl.textContent = "「港岳精密扣件工業股份有限公司已參考 GRI 準則報導本 GRI 內容索引所引用之 2025 年 1 月 1 日至 2025 年 12 月 31 日期間之資訊。」";
-      kpiClaim.textContent = "參考";
-      kpiClaimSub.textContent = `尚有 ${issueCount} 列內容索引問題`;
-    }
+    box.classList.add("warn");
+    titleEl.textContent = issueCount ? `索引尚有 ${issueCount} 列待補` : "索引欄位完整，待實質審查";
+    textEl.textContent = `已完成 ${rows.length - issueCount}／${rows.length} 列。此處僅檢查欄位完整性，不自動判定「依循」或「參考」GRI。範例頁碼不代表真實證據，請逐項核對報告內容與準則要求。報導期間：2025 年。`;
+    kpiClaim.textContent = `${Math.round((rows.length - issueCount) / Math.max(rows.length, 1) * 100)}%`;
+    kpiClaimSub.textContent = "索引填寫率・非合規判定";
 
-    const visibleRows = filterErr ? evaluatedRows.filter(x => !x.check.valid) : evaluatedRows;
+    const visibleRows = filterErr ? evaluatedRows.filter(x => !x.check.valid || x.row.key === focusState?.key) : evaluatedRows;
     const tbody = document.getElementById("griIndexBody");
     tbody.innerHTML = visibleRows.map(({ row, idx, st, check }) => {
       const reasonOptions = OMISSION_REASONS.map(r =>
@@ -928,20 +940,22 @@
         <td>${badge}</td>
       </tr>`;
     }).join("");
+    restoreFocus(focusState);
   }
 
   function fillSamplePages() {
+    if (!confirm("此操作會覆蓋目前索引內容，填入示範頁碼。是否繼續？")) return;
     const rows = buildGriIndexRows();
     rows.forEach((r, i) => {
       indexUserInputs[r.key] = {
-        location: `p.${Math.min(99, 6 + i)}`,
+        location: `範例 p.${Math.min(99, 6 + i)}`,
         omitted: false,
         reason: "",
         explanation: ""
       };
     });
     renderTab2();
-    showToast("已為全部列填入範例頁碼並完成依循檢核");
+    showToast("已填入示範頁碼；請改成真實位置");
   }
 
   function exportGriCsv() {
@@ -955,7 +969,7 @@
       const cols = [
         i + 1, r.standard, r.disclosure, st.location,
         st.omitted ? "是" : "否", st.reason, st.explanation, check.msg
-      ].map(v => `"${String(v || "").replace(/"/g, '""')}"`);
+      ].map(v => `"${csvSafe(v).replace(/"/g, '""')}"`);
       lines.push(cols.join(","));
     });
     const csv = "\uFEFF" + lines.join("\r\n");
@@ -974,113 +988,35 @@
   // 頁籤 3：漂綠與數字檢查
   function analyzeDraft(text) {
     const findings = [];
-    const rules = [
-      {
-        regex: /100%\s*再生能源|100%/g,
-        level: "高",
-        category: "漂綠／絕對用語",
-        reason: "C10 能源表顯示再生能源僅占 2.05%，且 K5 §2.1 禁用無證據之「100%」絕對用語（K3 §4 亦列為重大不一致）。",
-        suggestion: "改為「岡山總廠屋頂太陽光電 2025 年自發自用 980,000 度，占總耗能 2.05%」。"
-      },
-      {
-        regex: /全面使用綠色能源|全面上線|全面/g,
-        level: "高",
-        category: "漂綠／絕對用語",
-        reason: "K5 §2.1 明確禁用無證據之「全面」等絕對用語；全公司 97.95% 仍為非再生能源。",
-        suggestion: "刪除「全面」，具體敘明太陽光電裝置量與實際發電自用度數。"
-      },
-      {
-        regex: /碳中和/g,
-        level: "高",
-        category: "漂綠／未經認證主張",
-        reason: "K5 §2.2 規定「碳中和」須依 ISO 14068-1 等標準並具完整佐證，港岳目前無任何碳中和宣告依據。",
-        suggestion: "刪除「碳中和產品」字樣，改為「持續配合客戶盤查產品碳足跡（PCF）」。"
-      },
-      {
-        regex: /2030\s*年達成淨零排放|達成淨零|邁向淨零|淨零/g,
-        level: "高",
-        category: "前瞻性漂綠",
-        reason: "C9 2025 回應紀錄顯示「尚未訂定正式減碳目標」，K5 §2.1 禁用無依據之「淨零」承諾，K3 §3 要求前瞻資訊須具董事會決議與預算佐證。",
-        suggestion: "改為「預計於 2027 年完成合併盤查後，提報董事會訂定減碳目標」。"
-      },
-      {
-        regex: /全年零職災|零職災/g,
-        level: "高",
-        category: "不實數據／平衡性",
-        reason: "與 C10 職業安全嚴重不符：2025 年員工可記錄職業傷害 6 件（損失 118 日）、非員工 1 件（損失 6 日）（K5 §2.1、§2.5）。",
-        suggestion: "照實揭露員工 6 件（6.87／百萬工時）與非員工 1 件（10.02／百萬工時）及改善行動。"
-      },
-      {
-        regex: /AA1000[^。\n]*完成驗證|已委託[^。\n]*完成驗證|並通過第三方查證/g,
-        level: "高",
-        category: "不實確信／保證宣稱",
-        reason: "C10 溫室氣體顯示外部查證尚未取得（委託辦理中），K5 §2.4 與 K2 §3.3 規定未取得時不得寫已通過驗證／查證。",
-        suggestion: "改為「目前尚未取得外部保證；2025 年度範疇一、二查證委託中，預計 2026 年第 4 季完成」。"
-      },
-      {
-        regex: /涵蓋[^。\n]*全體營運據點及子公司/g,
-        level: "高",
-        category: "報導邊界不實",
-        reason: "C1 §3 與 C10 說明載明 2025 年為個體盤查，越南平陽子公司尚未納入。",
-        suggestion: "改為「涵蓋母公司三據點（岡山、路竹、台北）；越南子公司 2025 年未納入，預計 2027 年合併盤查」。"
-      },
-      {
-        regex: /10,?909\.584/g,
-        level: "高",
-        category: "C10 數字錯誤（範疇二）",
-        reason: "10,909.584 為舊 113 年度係數（0.474）之試算值；依 114 年度係數 0.466，C10 正確範疇二為 10,725.456 tCO2e。",
-        suggestion: "修正為 10,725.456 tCO2e，並於 GRI 2-4 說明電力係數重編。"
-      },
-      {
-        regex: /15,?847\.659/g,
-        level: "高",
-        category: "C10 數字錯誤（合計）",
-        reason: "15,847.659 係以舊係數範疇二加總；C10 正確範疇一＋二合計為 15,663.531 tCO2e（且原稿 0.4294 強度即以此算出）。",
-        suggestion: "修正為 15,663.531 tCO2e。"
-      },
-      {
-        regex: /20\.5%/g,
-        level: "高",
-        category: "C10 數字錯誤（再生能源占比）",
-        reason: "C10 能源表顯示再生能源占比為 2.05%（3,528.0 ÷ 171,794.8 GJ），原稿誤大 10 倍。",
-        suggestion: "修正為 2.05%（K5 §1.2 再生能源占比保留小數 2 位）。"
-      },
-      {
-        regex: /減少\s*1\.7%/g,
-        level: "中",
-        category: "係數變動未區分（K5 §2.3）",
-        reason: "2024 年與 2025 年係數（0.474→0.466）及邊界不同；同係數下僅減 0.6%，帳面減量 66.6% 來自電力係數調降。",
-        suggestion: "依 K5 §1.4 改寫為「因係數與邊界不同，兩年度不可直接比較」，並區分實際減量與係數影響。"
-      },
-      {
-        regex: /最[佳高好大優]|第一品牌|全方位|卓越|致力於/g,
-        level: "低",
-        category: "K5 §2.1／§4 語氣與誇飾",
-        reason: "K5 規範禁用無證據之「最」「第一」，並應避免「卓越」「全方位」等形容詞堆疊。",
-        suggestion: "改以具體數字與可驗證事實陳述。"
-      }
+    const normalized = text.normalize("NFKC");
+    const metrics = [
+      ["範疇一", /範疇[一1](?:排放量?|溫室氣體排放量?)?\s*(?:為|：|:)?\s*([\d,]+(?:\.\d+)?)\s*(?:tCO2e|tCO₂e|公噸)/gi, 4938.075, "tCO2e", .0005],
+      ["範疇二", /範疇[二2](?:排放量?|溫室氣體排放量?)?\s*(?:為|：|:)?\s*([\d,]+(?:\.\d+)?)\s*(?:tCO2e|tCO₂e|公噸)/gi, 10725.456, "tCO2e", .0005],
+      ["排放合計", /(?:排放(?:總量|合計)|合計)\s*(?:為|：|:)?\s*([\d,]+(?:\.\d+)?)\s*(?:tCO2e|tCO₂e)/gi, 15663.531, "tCO2e", .0005],
+      ["再生能源占比", /再生能源(?:占比|占|比例)\s*(?:為|：|:)?\s*([\d,]+(?:\.\d+)?)\s*%/g, 2.05, "%", .005]
     ];
-
-    rules.forEach(r => {
-      let match;
-      while ((match = r.regex.exec(text)) !== null) {
-        // 擷取前後文
-        const start = Math.max(0, match.index - 12);
-        const end = Math.min(text.length, match.index + match[0].length + 14);
-        const snippet = text.slice(start, end).replace(/\n+/g, " ");
-        findings.push({
-          level: r.level,
-          category: r.category,
-          snippet: `…${snippet}…`,
-          reason: r.reason,
-          suggestion: r.suggestion
-        });
+    metrics.forEach(([name, regex, expected, unit, tolerance]) => {
+      for (const m of normalized.matchAll(regex)) {
+        const actual = Number(m[1].replace(/,/g, ""));
+        if (Math.abs(actual - expected) > tolerance) findings.push({level:"高",category:`數值差異／${name}`,snippet:m[0],reason:`與原檔 2025 年基準 ${expected.toLocaleString("en-US",{maximumFractionDigits:3})} ${unit} 不同；請先確認年度、邊界、單位與原始佐證。`,suggestion:"核對適用基準後修正；不同年度或範疇不可直接套用。"});
       }
     });
-
-    const rank = { "高": 0, "中": 1, "低": 2 };
-    findings.sort((a, b) => rank[a.level] - rank[b.level]);
-    return findings;
+    const patterns = [
+      [/100\s*%\s*再生能源|全面使用綠色能源/g,"再生能源宣稱"],
+      [/碳中和|淨零|零職災/g,"環境／職安宣稱"],
+      [/已通過(?:驗證|查證)|通過第三方查證|完成驗證/g,"查證／保證宣稱"],
+      [/全體營運據點及子公司/g,"報導邊界"],
+      [/第一品牌|最[佳高好大優]|卓越/g,"比較或誇飾用語"]
+    ];
+    normalized.split(/[。！？\n]/).filter(Boolean).forEach(sentence => {
+      patterns.forEach(([regex, category]) => {
+        regex.lastIndex = 0;
+        if (!regex.test(sentence)) return;
+        const negated = /尚未|未達成|未取得|並非|不代表|未通過|無法宣稱/.test(sentence);
+        findings.push({level:"低",category:`人工確認／${category}`,snippet:sentence.trim(),reason:negated ? "此句含否定語意，不判定為不實宣稱；請核對上下文。" : "偵測到需佐證的用語；關鍵字本身不代表漂綠或違規。",suggestion:"確認所述年度、適用邊界、證據與前後文；必要時改寫為可驗證事實。"});
+      });
+    });
+    return findings.sort((a,b)=>({高:0,中:1,低:2}[a.level]-{高:0,中:1,低:2}[b.level]));
   }
 
   function renderTab3Check() {
@@ -1115,7 +1051,7 @@
     `;
 
     if (findings.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#1F5F4A; font-weight:600;">未偵測到 K5 禁用詞或 C10 數字矛盾。</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#1F5F4A; font-weight:600;">在目前支援的指標與用語中未發現提示；不代表全文正確或已完成合規審查。</td></tr>`;
       return;
     }
 
@@ -1155,7 +1091,7 @@
     showToast("已重設 C8 預設評分與門檻");
   });
 
-  document.getElementById("c8TableBody").addEventListener("input", e => {
+  document.getElementById("c8TableBody").addEventListener("change", e => {
     const t = e.target;
     if (!t.classList.contains("c8-input")) return;
     const id = t.dataset.id;
@@ -1171,7 +1107,7 @@
     }
   });
 
-  document.getElementById("publishYear").addEventListener("change", renderTab2);
+  document.getElementById("publishYear").addEventListener("change", () => { renderTab1(); renderTab2(); });
   document.getElementById("filterErrorsOnly").addEventListener("change", renderTab2);
   document.getElementById("btnFillSamplePages").addEventListener("click", fillSamplePages);
   document.getElementById("btnExportCsv").addEventListener("click", exportGriCsv);
@@ -1180,16 +1116,18 @@
     const t = e.target;
     const key = t.dataset.key;
     if (!key) return;
+    if (e.type === "input" && !t.classList.contains("gri-loc") && !t.classList.contains("gri-exp")) return;
     if (!indexUserInputs[key]) indexUserInputs[key] = { location: "", omitted: false, reason: "", explanation: "" };
     if (t.classList.contains("gri-loc")) indexUserInputs[key].location = t.value;
     if (t.classList.contains("gri-exp")) indexUserInputs[key].explanation = t.value;
-    renderTab2();
+    // Revalidate on change (blur), preserving the live input node while typing.
   });
 
   document.getElementById("griIndexBody").addEventListener("change", e => {
     const t = e.target;
     const key = t.dataset.key;
     if (!key) return;
+    if (e.type === "input" && !t.classList.contains("gri-loc") && !t.classList.contains("gri-exp")) return;
     if (!indexUserInputs[key]) indexUserInputs[key] = { location: "", omitted: false, reason: "", explanation: "" };
     if (t.classList.contains("gri-omit")) {
       indexUserInputs[key].omitted = t.checked;
@@ -1218,7 +1156,61 @@
     showToast("檢查完成");
   });
 
+
+  const STORAGE_KEY = "esg-report-workspace-v2";
+  function captureFocus() {
+    const el = document.activeElement;
+    if (!el || !el.dataset || !(el.dataset.key || el.dataset.id)) return null;
+    return {key:el.dataset.key,id:el.dataset.id,field:el.dataset.field,cls:el.className,start:el.selectionStart,end:el.selectionEnd};
+  }
+  function restoreFocus(f) {
+    if (!f) return;
+    const el = [...document.querySelectorAll("input,select")].find(e=>e.className===f.cls && e.dataset.key===f.key && e.dataset.id===f.id && e.dataset.field===f.field);
+    if (el) {el.focus({preventScroll:true});if(f.start!==null && el.type==="text") el.setSelectionRange(f.start,f.end);}
+  }
+  function csvSafe(v) { const t=String(v??""); return /^[\s]*[=+@-]/.test(t) ? "'"+t : t; }
+  function downloadFile(name, body, type) {
+    const u=URL.createObjectURL(new Blob([body],{type})); const a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+  }
+  function snapshot() {
+    return {app:"ESG-Report",version:2,savedAt:new Date().toISOString(),impacts,indexUserInputs,
+      settings:Object.fromEntries(["thresholdSig","thresholdHr","publishYear","draftTextarea"].map(id=>[id,document.getElementById(id).value])),
+      hr:document.getElementById("enableHrRule").checked};
+  }
+  function validateBackup(d) {
+    if(!d || d.app!=="ESG-Report" || d.version!==2 || !Array.isArray(d.impacts) || d.impacts.length!==DEFAULT_C8.length) throw Error("不相容的備份格式");
+    const copy=JSON.parse(JSON.stringify(DEFAULT_C8));
+    copy.forEach(base=>{const row=d.impacts.find(x=>x.id===base.id);if(!row)throw Error("評分項目缺失");for(const k of ["scale","scope","prob","irrem"]){if(base[k]===null)continue;const n=row[k];if(typeof n!=="number"||!Number.isFinite(n)||n<1||n>5)throw Error("評分超出 1–5");base[k]=n;}});
+    if(!d.settings || !["2026","2027"].includes(d.settings.publishYear) || typeof d.settings.draftTextarea!=="string" || typeof d.hr!=="boolean")throw Error("設定格式錯誤");
+    for(const [k,max] of [["thresholdSig",25],["thresholdHr",5]]){const v=Number(d.settings[k]);if(!Number.isFinite(v)||v<1||v>max)throw Error("門檻設定錯誤");}
+    const inputs=Object.create(null);
+    if(!d.indexUserInputs||typeof d.indexUserInputs!=="object"||Array.isArray(d.indexUserInputs))throw Error("索引格式錯誤");
+    for(const [key,v] of Object.entries(d.indexUserInputs)){if(!/^(GRI2_|GRI3_|TOPIC_)/.test(key)||!v||typeof v.omitted!=="boolean"||!["location","reason","explanation"].every(k=>typeof v[k]==="string")||!OMISSION_REASONS.includes(v.reason))throw Error("索引欄位錯誤");inputs[key]={location:v.location,omitted:v.omitted,reason:v.reason,explanation:v.explanation};}
+    return {...d,impacts:copy,indexUserInputs:inputs};
+  }
+  function applyState(d) {
+    impacts=d.impacts;indexUserInputs=d.indexUserInputs;
+    for(const id of ["thresholdSig","thresholdHr","publishYear","draftTextarea"])document.getElementById(id).value=d.settings[id];
+    document.getElementById("enableHrRule").checked=d.hr;
+  }
+  function saveWorkspace() {
+    try {localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshot()));document.getElementById("saveStatus").textContent="已自動儲存 · "+new Date().toLocaleTimeString("zh-TW");}
+    catch(e){document.getElementById("saveStatus").textContent="無法自動儲存，請下載備份";}
+  }
+  function setupWorkspace() {
+    try {const raw=localStorage.getItem(STORAGE_KEY);if(raw){applyState(validateBackup(JSON.parse(raw)));document.getElementById("saveStatus").textContent="已還原本機工作進度";}}
+    catch(e){document.getElementById("saveStatus").textContent="無法還原本機資料；可匯入備份";}
+    document.addEventListener("input",saveWorkspace);document.addEventListener("change",saveWorkspace);
+    document.addEventListener("click",e=>{if(e.target.closest("button"))saveWorkspace();});
+    document.getElementById("backupBtn").onclick=()=>downloadFile("ESG-Report-備份-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(snapshot(),null,2),"application/json");
+    document.getElementById("restoreBtn").onclick=()=>document.getElementById("restoreFile").click();
+    document.getElementById("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>5*1024*1024)throw Error("備份超過 5 MB");const d=validateBackup(JSON.parse(await f.text()));if(!confirm("匯入將覆蓋目前工作進度，建議先下載備份。確定匯入？"))return;applyState(d);renderTab1();renderTab2();renderTab3Check();saveWorkspace();showToast("備份已還原");}catch(err){alert("匯入失敗："+err.message);}finally{e.target.value="";}};
+    document.getElementById("exportChecks").onclick=()=>{const text=document.getElementById("draftTextarea").value;if(!text.trim()){showToast("請先輸入要檢查的草稿");return;}renderTab3Check();const rows=[["等級","類別","原文","說明","建議"],...analyzeDraft(text).map(f=>[f.level,f.category,f.snippet,f.reason,f.suggestion])];downloadFile("ESG-Report-檢查結果.csv","\uFEFF"+rows.map(r=>r.map(v=>'"'+csvSafe(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),"text/csv;charset=utf-8");};
+    document.getElementById("draftTextarea").addEventListener("input",()=>{document.getElementById("kpiGreenwashSub").textContent="草稿已變更，請重新檢查";document.getElementById("kpiGreenwashIssues").textContent="—";document.getElementById("checkSummaryBadges").textContent="結果已過期";document.getElementById("checkResultsBody").innerHTML='<tr><td colspan="5">草稿已變更，請重新執行檢查。</td></tr>';});
+    document.querySelectorAll(".tab-btn").forEach(btn=>{btn.setAttribute("role","tab");btn.setAttribute("aria-controls",btn.dataset.tab);btn.setAttribute("aria-selected",btn.classList.contains("active"));btn.addEventListener("click",()=>document.querySelectorAll(".tab-btn").forEach(b=>b.setAttribute("aria-selected",b===btn)));});
+  }
   // 初始化
+  setupWorkspace();
   renderTab1();
   renderTab2();
 })();
