@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>港岳精密扣件｜永續報告書工作台</title>
+<style>
+  :root {
+    --green-900: #144032;
+    --green-800: #1F5F4A;
+    --green-700: #28745B;
+    --green-600: #2E8B6B;
+    --green-100: #E8F5E9;
+    --green-50: #F4F7F5;
+    --amber-700: #B45309;
+    --amber-500: #D97706;
+    --amber-100: #FEF3C7;
+    --red-700: #B91C1C;
+    --red-600: #C62828;
+    --red-100: #FEE2E2;
+    --slate-900: #1E293B;
+    --slate-600: #475569;
+    --slate-400: #94A3B8;
+    --slate-200: #E2E8F0;
+    --white: #FFFFFF;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: var(--green-50);
+    color: var(--slate-900);
+    line-height: 1.5;
+  }
+  header {
+    background: linear-gradient(135deg, var(--green-900), var(--green-800));
+    color: var(--white);
+    padding: 20px 24px 18px;
+    box-shadow: 0 2px 10px rgba(20, 64, 50, 0.18);
+  }
+  .header-top {
+    max-width: 1320px;
+    margin: 0 auto 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .brand p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    opacity: 0.88;
+  }
+  .privacy-badge {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+  }
+  .kpi-grid {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  @media (max-width: 860px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+  }
+  .kpi-card {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+  }
+  .kpi-label {
+    font-size: 0.78rem;
+    opacity: 0.88;
+    margin-bottom: 4px;
+  }
+  .kpi-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+  }
+  .kpi-sub {
+    font-size: 0.75rem;
+    opacity: 0.82;
+    margin-top: 2px;
+  }
+  .container {
+    max-width: 1320px;
+    margin: 20px auto 40px;
+    padding: 0 20px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid var(--slate-200);
+    padding-bottom: 10px;
+  }
+  .tab-btn {
+    border: 1px solid var(--slate-200);
+    background: var(--white);
+    color: var(--slate-600);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.94rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-btn:hover {
+    border-color: var(--green-700);
+    color: var(--green-800);
+  }
+  .tab-btn.active {
+    background: var(--green-800);
+    color: var(--white);
+    border-color: var(--green-800);
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  }
+  .card-title {
+    margin: 0 0 12px;
+    font-size: 1.06rem;
+    font-weight: 700;
+    color: var(--green-900);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+  }
+  input[type="number"], input[type="text"], select, textarea {
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: var(--slate-900);
+    background: var(--white);
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--green-600);
+    border-color: var(--green-700);
+  }
+  input.num-sm {
+    width: 60px;
+    text-align: center;
+  }
+  .btn {
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 8px 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--green-800);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--green-900); }
+  .btn-outline {
+    background: var(--white);
+    color: var(--green-800);
+    border-color: var(--green-800);
+  }
+  .btn-outline:hover { background: var(--green-100); }
+  .btn-subtle {
+    background: #F1F5F9;
+    color: var(--slate-900);
+    border-color: #CBD5E1;
+  }
+  .btn-subtle:hover { background: #E2E8F0; }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th {
+    background: var(--green-800);
+    color: var(--white);
+    text-align: left;
+    padding: 9px 10px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--slate-200);
+    vertical-align: middle;
+  }
+  tr:nth-child(even) td { background: #FAFDFB; }
+  tr.row-error td { background: #FFF5F5; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-green { background: var(--green-100); color: var(--green-900); }
+  .badge-amber { background: var(--amber-100); color: var(--amber-700); }
+  .badge-red { background: var(--red-100); color: var(--red-700); }
+  .badge-gray { background: #E2E8F0; color: var(--slate-600); }
+  .topics-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .topic-chip {
+    background: var(--green-100);
+    border: 1px solid #A7F3D0;
+    color: var(--green-900);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .statement-box {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--green-800);
+    background: var(--green-100);
+  }
+  .statement-box.warn {
+    border-left-color: var(--amber-500);
+    background: var(--amber-100);
+  }
+  .statement-box h4 {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+  }
+  .statement-box p {
+    margin: 0;
+    font-size: 0.88rem;
+  }
+  textarea.draft-input {
+    width: 100%;
+    min-height: 190px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  .chart-box {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .muted { color: var(--slate-600); font-size: 0.83rem; }
+  .toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: var(--green-900);
+    color: var(--white);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <h1>港岳精密扣件工業股份有限公司｜永續報告書工作台</h1>
+      <p>依循 GRI 準則（GRI 1／2／3、305／302、102／103）、AA1000AP、ISSA 5000 與 K5 撰寫規範</p>
+    </div>
+    <div class="privacy-badge">本機離線運算・不上傳任何資料</div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">重大主題數</div>
+      <div class="kpi-value" id="kpiTopics">7</div>
+      <div class="kpi-sub" id="kpiImpactsSub">8 項重大衝擊歸併</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">內容索引問題數</div>
+      <div class="kpi-value" id="kpiIndexIssues">0</div>
+      <div class="kpi-sub" id="kpiIndexRowsSub">共 70 列</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">漂綠／數字問題數</div>
+      <div class="kpi-value" id="kpiGreenwashIssues">0</div>
+      <div class="kpi-sub" id="kpiGreenwashSub">尚未執行檢查</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">目前可宣稱狀態</div>
+      <div class="kpi-value" id="kpiClaimStatus">參考</div>
+      <div class="kpi-sub" id="kpiClaimSub">尚有內容索引待補</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab-btn active" data-tab="tab1">1. 重大主題評分（C8）</button>
+    <button type="button" class="tab-btn" data-tab="tab2">2. GRI 內容索引產生器</button>
+    <button type="button" class="tab-btn" data-tab="tab3">3. 漂綠與數字檢查（K5／C10）</button>
+  </div>
+
+  <!-- 頁籤 1：重大主題評分 -->
+  <section id="tab1" class="panel active">
+    <div class="card">
+      <div class="card-title">
+        <span>門檻設定與即時歸併結果</span>
+        <button type="button" class="btn btn-outline" id="btnResetC8">重設 C8 預設分數</button>
+      </div>
+      <div class="controls-row">
+        <label class="control-group">
+          顯著性門檻 ≥
+          <input type="number" id="thresholdSig" class="num-sm" value="13" step="0.5" min="1" max="25">
+        </label>
+        <label class="control-group">
+          <input type="checkbox" id="enableHrRule" checked>
+          啟用人權特別規則：涉及人權之負面衝擊嚴重性 ≥
+          <input type="number" id="thresholdHr" class="num-sm" value="3.5" step="0.1" min="1" max="5">
+        </label>
+      </div>
+      <div class="muted" style="margin-bottom:10px;">
+        歸併後重大主題（<strong id="mergedCountText">7</strong> 項，連動更新「GRI 內容索引產生器」）：
+      </div>
+      <div class="topics-chips" id="mergedTopicsChips"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>衝擊顯著性排序長條圖</span><span class="muted">深綠：顯著性達門檻｜琥珀：人權嚴重性達門檻｜紅虛線：顯著性門檻</span></div>
+      <div class="chart-box" id="impactChartContainer"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>C8 衝擊鑑別清單（17 項，可直接修改評分）</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>編號</th>
+              <th>衝擊主題</th>
+              <th>類型</th>
+              <th>人權</th>
+              <th>規模 (1–5)</th>
+              <th>範圍 (1–5)</th>
+              <th>不可補救性 (1–5)</th>
+              <th>嚴重性</th>
+              <th>可能性</th>
+              <th>顯著性</th>
+              <th>是否重大</th>
+              <th>歸併主題／GRI</th>
+            </tr>
+          </thead>
+          <tbody id="c8TableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁籤 2：GRI 內容索引產生器 -->
+  <section id="tab2" class="panel">
+    <div class="card">
+      <div class="card-title">
+        <span>GRI 內容索引設定與使用聲明檢核</span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline" id="btnFillSamplePages">一鍵填入範例頁碼</button>
+          <button type="button" class="btn btn-primary" id="btnExportCsv">匯出 CSV</button>
+        </div>
+      </div>
+      <div class="controls-row">
+        <label class="control-group">
+          報告書發布年：
+          <select id="publishYear">
+            <option value="2026">2026 年發布（2025 年度報告：使用 GRI 305／302）</option>
+            <option value="2027">2027 年起發布（2026 年度起：使用 GRI 102／103）</option>
+          </select>
+        </label>
+        <label class="control-group">
+          <input type="checkbox" id="filterErrorsOnly">
+          僅顯示有問題的列
+        </label>
+        <span class="muted" id="indexCountBadge">目前共 70 列</span>
+      </div>
+      <div id="usageStatementBox" class="statement-box warn">
+        <h4 id="usageStatementTitle">使用聲明：參考 GRI 準則（with reference）</h4>
+        <p id="usageStatementText"></p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>GRI 準則</th>
+              <th>揭露項目</th>
+              <th>位置（頁碼／網址）</th>
+              <th>省略</th>
+              <th>省略理由（4 種）</th>
+              <th>省略說明</th>
+              <th>檢核狀態</th>
+            </tr>
+          </thead>
+          <tbody id="griIndexBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁籤 3：漂綠與數字檢查 -->
+  <section id="tab3" class="panel">
+    <div class="card">
+      <div class="card-title">
+        <span>報告書文字漂綠與 C10 數據比對檢查</span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline" id="btnLoadC11">載入 C11 範例</button>
+          <button type="button" class="btn btn-subtle" id="btnClearDraft">清空</button>
+          <button type="button" class="btn btn-primary" id="btnRunCheck">執行檢查</button>
+        </div>
+      </div>
+      <p class="muted" style="margin:0 0 10px;">
+        依 <strong>K5 撰寫規範</strong> 偵測禁用絕對用語（100%、全面、碳中和、淨零、零職災、已通過驗證等），並自動核對 <strong>C10</strong> 經核對數據（範疇一 4,938.075、範疇二 10,725.456、合計 15,663.531 tCO2e、再生能源占比 2.05%、員工職傷 6 件／非員工 1 件）。
+      </p>
+      <textarea id="draftTextarea" class="draft-input" placeholder="請貼上報告書文字，或點選右上角「載入 C11 範例」..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>檢查結果清單</span>
+        <div id="checkSummaryBadges" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>風險等級</th>
+              <th>檢查類別</th>
+              <th>原文片段／偵測詞</th>
+              <th>問題說明與依據（K5／K3／C10）</th>
+              <th>建議改寫文字</th>
+            </tr>
+          </thead>
+          <tbody id="checkResultsBody">
+            <tr><td colspan="5" class="muted" style="text-align:center; padding:20px;">請貼上文字或點選「載入 C11 範例」後執行檢查。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+(function() {
+  "use strict";
+
+  // 1. 內嵌 C8 衝擊清單（程式讀取 C8_港岳扣件_2025衝擊鑑別清單.xlsx 後寫入）
+  const DEFAULT_C8 = [
+    { id: "I01", topic: "氣候變遷（營運排放）", mergedKey: "氣候變遷", actPot: "實際", posNeg: "負面", hr: false, scale: 4, scope: 4, irrem: 4, prob: 5, gri2026: "GRI 305", gri2027: "GRI 102" },
+    { id: "I02", topic: "氣候變遷（價值鏈排放）", mergedKey: "氣候變遷", actPot: "實際", posNeg: "負面", hr: false, scale: 5, scope: 4, irrem: 4, prob: 5, gri2026: "GRI 305-3", gri2027: "GRI 102-7" },
+    { id: "I03", topic: "能源使用", mergedKey: "能源使用", actPot: "實際", posNeg: "負面", hr: false, scale: 3, scope: 3, irrem: 3, prob: 5, gri2026: "GRI 302", gri2027: "GRI 103" },
+    { id: "I04", topic: "職業安全衛生", mergedKey: "職業安全衛生", actPot: "實際", posNeg: "負面", hr: true, scale: 4, scope: 3, irrem: 4, prob: 5, gri2026: "GRI 403", gri2027: "GRI 403" },
+    { id: "I05", topic: "空氣污染（熱處理爐廢氣）", mergedKey: "空氣污染", actPot: "潛在", posNeg: "負面", hr: false, scale: 3, scope: 2, irrem: 2, prob: 3, gri2026: "GRI 305-7", gri2027: "GRI 305-7" },
+    { id: "I06", topic: "廢棄物（廢酸、污泥）", mergedKey: "廢棄物", actPot: "實際", posNeg: "負面", hr: false, scale: 3, scope: 2, irrem: 3, prob: 5, gri2026: "GRI 306", gri2027: "GRI 306" },
+    { id: "I07", topic: "水資源", mergedKey: "水資源", actPot: "實際", posNeg: "負面", hr: false, scale: 2, scope: 2, irrem: 2, prob: 5, gri2026: "GRI 303", gri2027: "GRI 303" },
+    { id: "I08", topic: "供應鏈人權（委外表面處理、仲介費）", mergedKey: "供應鏈人權", actPot: "潛在", posNeg: "負面", hr: true, scale: 4, scope: 3, irrem: 4, prob: 3, gri2026: "GRI 414、408、409", gri2027: "GRI 414、408、409" },
+    { id: "I09", topic: "外籍移工住宿與待遇", mergedKey: "外籍移工住宿與待遇", actPot: "潛在", posNeg: "負面", hr: true, scale: 3, scope: 2, irrem: 3, prob: 3, gri2026: "GRI 2-30", gri2027: "GRI 2-30" },
+    { id: "I10", topic: "產品品質與安全", mergedKey: "產品品質與安全", actPot: "潛在", posNeg: "負面", hr: true, scale: 5, scope: 3, irrem: 4, prob: 2, gri2026: "GRI 416", gri2027: "GRI 416" },
+    { id: "I11", topic: "人才培育", mergedKey: "人才培育", actPot: "實際", posNeg: "正面", hr: false, scale: 3, scope: 3, irrem: null, prob: 5, gri2026: "GRI 404", gri2027: "GRI 404" },
+    { id: "I12", topic: "員工薪酬與福利", mergedKey: "員工薪酬與福利", actPot: "實際", posNeg: "正面", hr: false, scale: 2, scope: 3, irrem: null, prob: 5, gri2026: "GRI 2-21", gri2027: "GRI 2-21" },
+    { id: "I13", topic: "在地就業與經濟貢獻", mergedKey: "在地就業與經濟貢獻", actPot: "實際", posNeg: "正面", hr: false, scale: 3, scope: 2, irrem: null, prob: 5, gri2026: "GRI 201、204", gri2027: "GRI 201、204" },
+    { id: "I14", topic: "誠信經營與反貪腐", mergedKey: "誠信經營與反貪腐", actPot: "潛在", posNeg: "負面", hr: false, scale: 3, scope: 2, irrem: 2, prob: 2, gri2026: "GRI 205", gri2027: "GRI 205" },
+    { id: "I15", topic: "資訊安全（客戶圖面）", mergedKey: "資訊安全", actPot: "潛在", posNeg: "負面", hr: false, scale: 3, scope: 2, irrem: 3, prob: 3, gri2026: "GRI 418", gri2027: "GRI 418" },
+    { id: "I16", topic: "噪音與社區關係", mergedKey: "噪音與社區關係", actPot: "實際", posNeg: "負面", hr: false, scale: 2, scope: 1, irrem: 1, prob: 5, gri2026: "GRI 413", gri2027: "GRI 413" },
+    { id: "I17", topic: "物料與循環（廢鋼回收）", mergedKey: "物料與循環", actPot: "實際", posNeg: "正面", hr: false, scale: 3, scope: 2, irrem: null, prob: 5, gri2026: "GRI 301", gri2027: "GRI 301" }
+  ];
+
+  // C11 範例全文
+  const C11_SAMPLE = `## 第 0 章 關於本報告書（p.2–3）
+本報告書為港岳精密扣件工業股份有限公司第三本永續報告書，報導期間為 2025 年 1 月 1 日至 12 月 31 日，依循 GRI 準則編製。
+報導範疇涵蓋港岳全體營運據點及子公司。
+本報告書已委託第三方驗證機構依 AA1000 保證標準 v3 第二類型高度保證 完成驗證，保證聲明書詳附錄。
+
+## 第 1 章 董事長的話（p.4–5）
+2025 年港岳全面使用綠色能源，岡山總廠屋頂太陽光電全面上線，我們已成為 100% 再生能源驅動的扣件工廠。在全體同仁努力下，2025 年溫室氣體排放量較 2024 年減少 1.7%，展現港岳的減碳決心。
+港岳的 M12 法蘭螺栓已是碳中和產品，協助歐洲客戶邁向淨零。我們承諾 2030 年達成淨零排放。
+
+## 第 4 章 氣候變遷與能源（p.30–36）
+2025 年範疇一排放 4,938.075 tCO2e、範疇二排放 10,909.584 tCO2e，合計 15,847.659 tCO2e，排放強度 0.4294 tCO2e／公噸產品。盤查依 ISO 14064-1:2018 執行，並通過第三方查證。
+2025 年總耗能 171,795 GJ，其中再生能源占 20.5%。
+
+## 第 6 章 職業安全衛生（p.56–59）
+港岳重視員工安全，2025 年全年零職災。職安委員會每月開會，2025 年共開會 12 次。`;
+
+  // GRI 2 (30 項)
+  const GRI_2_LIST = [
+    ["2-1", "組織詳細資訊"], ["2-2", "納入組織永續報導的實體"], ["2-3", "報導期間、頻率及聯絡人"],
+    ["2-4", "資訊重編"], ["2-5", "外部確信／保證"], ["2-6", "活動、價值鏈和其他商業關係"],
+    ["2-7", "員工"], ["2-8", "非員工的工作者"], ["2-9", "治理結構及組成"],
+    ["2-10", "最高治理單位的提名與遴選"], ["2-11", "最高治理單位的主席"], ["2-12", "最高治理單位於監督衝擊管理的角色"],
+    ["2-13", "衝擊管理的負責人"], ["2-14", "最高治理單位於永續報導的角色"], ["2-15", "利益衝突"],
+    ["2-16", "溝通關鍵重大事件"], ["2-17", "最高治理單位的群體智識"], ["2-18", "最高治理單位的績效評估"],
+    ["2-19", "薪酬政策"], ["2-20", "薪酬決定流程"], ["2-21", "年度總薪酬比率"],
+    ["2-22", "永續發展策略的聲明"], ["2-23", "政策承諾"], ["2-24", "納入政策承諾"],
+    ["2-25", "補救負面衝擊的程序"], ["2-26", "尋求建議和提出疑慮的機制"], ["2-27", "法規遵循"],
+    ["2-28", "公協會的會員資格"], ["2-29", "利害關係人議合方針"], ["2-30", "團體協約"]
+  ];
+
+  // 主題對應之揭露項目（確保 2026 版 = 70 列，2027 版 = 77 列）
+  const TOPIC_DISCLOSURES = {
+    "氣候變遷": {
+      2026: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（氣候變遷）"],
+        ["GRI 305：排放 2016", "305-1 直接（範疇一）溫室氣體排放"],
+        ["GRI 305：排放 2016", "305-2 能源間接（範疇二）溫室氣體排放"],
+        ["GRI 305：排放 2016", "305-3 其他間接（範疇三）溫室氣體排放"],
+        ["GRI 305：排放 2016", "305-4 溫室氣體排放強度"],
+        ["GRI 305：排放 2016", "305-5 溫室氣體排放減量"]
+      ],
+      2027: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（氣候變遷）"],
+        ["GRI 102：氣候變遷 2025", "102-1 氣候變遷減緩的轉型計畫"],
+        ["GRI 102：氣候變遷 2025", "102-2 氣候變遷調適計畫"],
+        ["GRI 102：氣候變遷 2025", "102-3 公正轉型"],
+        ["GRI 102：氣候變遷 2025", "102-4 溫室氣體減量目標與進展"],
+        ["GRI 102：氣候變遷 2025", "102-5 範疇一溫室氣體排放"],
+        ["GRI 102：氣候變遷 2025", "102-6 範疇二溫室氣體排放"],
+        ["GRI 102：氣候變遷 2025", "102-7 範疇三溫室氣體排放"],
+        ["GRI 102：氣候變遷 2025", "102-8 溫室氣體排放強度"],
+        ["GRI 102：氣候變遷 2025", "102-9 價值鏈中的溫室氣體移除"],
+        ["GRI 102：氣候變遷 2025", "102-10 碳權"]
+      ]
+    },
+    "能源使用": {
+      2026: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（能源使用）"],
+        ["GRI 302：能源 2016", "302-1 組織內部的能源消耗"],
+        ["GRI 302：能源 2016", "302-3 能源密集度"],
+        ["GRI 302：能源 2016", "302-4 減少能源消耗"]
+      ],
+      2027: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（能源使用）"],
+        ["GRI 103：能源 2025", "103-1 能源政策與承諾"],
+        ["GRI 103：能源 2025", "103-2 組織內部能源消耗與自發電"],
+        ["GRI 103：能源 2025", "103-3 上下游能源消耗"],
+        ["GRI 103：能源 2025", "103-4 能源密集度"],
+        ["GRI 103：能源 2025", "103-5 能源消耗減量"]
+      ]
+    },
+    "職業安全衛生": {
+      both: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（職業安全衛生）"],
+        ["GRI 403：職業安全衛生 2018", "403-1 職業安全衛生管理系統"],
+        ["GRI 403：職業安全衛生 2018", "403-2 危害辨識、風險評估及事故調查"],
+        ["GRI 403：職業安全衛生 2018", "403-3 職業健康服務"],
+        ["GRI 403：職業安全衛生 2018", "403-4 有關職業安全衛生之工作者參與、諮商與溝通"],
+        ["GRI 403：職業安全衛生 2018", "403-5 有關職業安全衛生之工作者訓練"],
+        ["GRI 403：職業安全衛生 2018", "403-6 工作者健康促進"],
+        ["GRI 403：職業安全衛生 2018", "403-7 預防和減輕與業務關係直接相關的職業安全衛生衝擊"],
+        ["GRI 403：職業安全衛生 2018", "403-8 職業安全衛生管理系統所涵蓋的工作者"],
+        ["GRI 403：職業安全衛生 2018", "403-9 職業傷害"],
+        ["GRI 403：職業安全衛生 2018", "403-10 職業病"]
+      ]
+    },
+    "人才培育": {
+      both: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（人才培育）"],
+        ["GRI 404：訓練與教育 2016", "404-1 每名員工每年接受訓練的平均時數"],
+        ["GRI 404：訓練與教育 2016", "404-2 提升員工職能及過渡協助方案"]
+      ]
+    },
+    "廢棄物": {
+      both: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（廢棄物）"],
+        ["GRI 306：廢棄物 2020", "306-1 廢棄物的產生與顯著廢棄物相關衝擊"],
+        ["GRI 306：廢棄物 2020", "306-2 顯著廢棄物相關衝擊之管理"],
+        ["GRI 306：廢棄物 2020", "306-3 廢棄物產生量"],
+        ["GRI 306：廢棄物 2020", "306-4 處置移轉之廢棄物"],
+        ["GRI 306：廢棄物 2020", "306-5 進入最終處置之廢棄物"]
+      ]
+    },
+    "供應鏈人權": {
+      both: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（供應鏈人權）"],
+        ["GRI 414：供應商社會評估 2016", "414-1 使用社會標準篩選的新供應商"],
+        ["GRI 414：供應商社會評估 2016", "414-2 供應鏈中負面社會衝擊以及採取的行動"],
+        ["GRI 408：童工 2016", "408-1 營運據點和供應商使用童工之重大風險"],
+        ["GRI 409：強迫或強制勞動 2016", "409-1 具強迫或強制勞動事件重大風險的營運據點和供應商"]
+      ]
+    },
+    "產品品質與安全": {
+      both: [
+        ["GRI 3：重大主題 2021", "3-3 重大主題管理（產品品質與安全）"],
+        ["GRI 416：顧客健康與安全 2016", "416-1 評估產品和服務類別對健康和安全的影響"],
+        ["GRI 416：顧客健康與安全 2016", "416-2 違反有關產品與服務的健康和安全法規之事件"]
+      ]
+    },
+    "空氣污染": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（空氣污染）"], ["GRI 305：排放 2016", "305-7 氮氧化物（NOx）、硫氧化物（SOx）及其他重大的氣體排放"]] },
+    "水資源": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（水資源）"], ["GRI 303：水與放流水 2018", "303-3 取水"], ["GRI 303：水與放流水 2018", "303-5 耗水"]] },
+    "外籍移工住宿與待遇": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（外籍移工住宿與待遇）"]] },
+    "員工薪酬與福利": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（員工薪酬與福利）"], ["GRI 2：一般揭露 2021", "2-21 年度總薪酬比率（補充）"]] },
+    "在地就業與經濟貢獻": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（在地就業與經濟貢獻）"], ["GRI 201：經濟績效 2016", "201-1 直接經濟價值產生及分配"], ["GRI 204：採購實務 2016", "204-1 來自當地供應商的採購支出比例"]] },
+    "誠信經營與反貪腐": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（誠信經營）"], ["GRI 205：反貪腐 2016", "205-3 已確認的貪腐事件"]] },
+    "資訊安全": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（資訊安全）"], ["GRI 418：顧客隱私 2016", "418-1 經證實侵犯客戶隱私或遺失客戶資料的投訴"]] },
+    "噪音與社區關係": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（噪音與社區關係）"], ["GRI 413：當地社區 2016", "413-1 經當地社區議合、衝擊評估和發展計畫的營運活動"]] },
+    "物料與循環": { both: [["GRI 3：重大主題 2021", "3-3 重大主題管理（物料與循環）"], ["GRI 301：物料 2016", "301-1 所用物料的重量或體積"], ["GRI 301：物料 2016", "301-2 使用的再生投入物料"]] }
+  };
+
+  const OMISSION_REASONS = ["", "不適用", "法律禁止", "保密限制", "資訊無法取得或不完整"];
+
+  // App State
+  let impacts = JSON.parse(JSON.stringify(DEFAULT_C8));
+  let indexUserInputs = {}; // key -> { location, omitted, reason, explanation }
+  let lastCheckIssuesCount = 0;
+  let lastCheckExecuted = false;
+
+  function showToast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 2400);
+  }
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // 計算單筆衝擊指標
+  function evaluateImpacts() {
+    const thSig = parseFloat(document.getElementById("thresholdSig").value) || 13;
+    const useHr = document.getElementById("enableHrRule").checked;
+    const thHr = parseFloat(document.getElementById("thresholdHr").value) || 3.5;
+
+    return impacts.map(item => {
+      const sev = item.posNeg === "負面"
+        ? (Number(item.scale) + Number(item.scope) + Number(item.irrem || 1)) / 3
+        : (Number(item.scale) + Number(item.scope)) / 2;
+      const prob = item.actPot === "實際" ? 5 : Number(item.prob);
+      const sig = sev * prob;
+      const hitSig = sig >= thSig;
+      const hitHr = useHr && item.hr && item.posNeg === "負面" && sev >= thHr;
+      const isMaterial = hitSig || hitHr;
+      return { ...item, sev, prob, sig, hitSig, hitHr, isMaterial };
+    });
+  }
+
+  function getMergedMaterialTopics(evaluated) {
+    const map = new Map();
+    evaluated.filter(x => x.isMaterial).forEach(x => {
+      if (!map.has(x.mergedKey)) {
+        map.set(x.mergedKey, { name: x.mergedKey, ids: [x.id], maxSig: x.sig });
+      } else {
+        const entry = map.get(x.mergedKey);
+        entry.ids.push(x.id);
+        entry.maxSig = Math.max(entry.maxSig, x.sig);
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => b.maxSig - a.maxSig);
+  }
+
+  // 渲染頁籤 1
+  function renderTab1() {
+    const evaluated = evaluateImpacts();
+    const sorted = [...evaluated].sort((a, b) => b.sig - a.sig || b.sev - a.sev);
+    const merged = getMergedMaterialTopics(evaluated);
+    const matImpactsCount = evaluated.filter(x => x.isMaterial).length;
+
+    document.getElementById("mergedCountText").textContent = merged.length;
+    document.getElementById("kpiTopics").textContent = merged.length;
+    document.getElementById("kpiImpactsSub").textContent = `${matImpactsCount} 項重大衝擊歸併`;
+
+    const chipsEl = document.getElementById("mergedTopicsChips");
+    chipsEl.innerHTML = merged.length
+      ? merged.map(t => `<span class="topic-chip">${escapeHtml(t.name)}（${t.ids.join("＋")}）</span>`).join("")
+      : `<span class="muted">目前無符合門檻之重大主題</span>`;
+
+    renderSvgBarChart(sorted);
+
+    const tbody = document.getElementById("c8TableBody");
+    tbody.innerHTML = sorted.map(row => {
+      const statusBadge = row.hitSig
+        ? `<span class="badge badge-green">是（顯著性）</span>`
+        : (row.hitHr ? `<span class="badge badge-amber">是（人權嚴重性）</span>` : `<span class="badge badge-gray">否</span>`);
+      const irremInput = row.posNeg === "負面"
+        ? `<input type="number" class="num-sm c8-input" data-id="${row.id}" data-field="irrem" min="1" max="5" step="1" value="${row.irrem}">`
+        : `<span class="muted">—</span>`;
+      const probInput = row.actPot === "潛在"
+        ? `<input type="number" class="num-sm c8-input" data-id="${row.id}" data-field="prob" min="1" max="5" step="1" value="${row.prob}">`
+        : `<span>5</span>`;
+      return `<tr>
+        <td><strong>${row.id}</strong></td>
+        <td>${escapeHtml(row.topic)}</td>
+        <td>${row.actPot}／${row.posNeg}</td>
+        <td>${row.hr ? '<span class="badge badge-amber">是</span>' : '否'}</td>
+        <td><input type="number" class="num-sm c8-input" data-id="${row.id}" data-field="scale" min="1" max="5" step="1" value="${row.scale}"></td>
+        <td><input type="number" class="num-sm c8-input" data-id="${row.id}" data-field="scope" min="1" max="5" step="1" value="${row.scope}"></td>
+        <td>${irremInput}</td>
+        <td><strong>${row.sev.toFixed(2)}</strong></td>
+        <td>${probInput}</td>
+        <td><strong>${row.sig.toFixed(2)}</strong></td>
+        <td>${statusBadge}</td>
+        <td>${escapeHtml(row.mergedKey)}<br><span class="muted">${escapeHtml(row.gri2026)}</span></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function renderSvgBarChart(sorted) {
+    const thSig = parseFloat(document.getElementById("thresholdSig").value) || 13;
+    const width = 920;
+    const marginLeft = 245;
+    const marginRight = 140;
+    const marginTop = 24;
+    const rowH = 28;
+    const height = marginTop + sorted.length * rowH + 34;
+    const maxVal = Math.max(25, thSig + 2, ...sorted.map(d => d.sig));
+    const plotW = width - marginLeft - marginRight;
+    const xPos = v => marginLeft + (v / maxVal) * plotW;
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" style="max-width:960px; font-family:inherit;">`;
+    svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#FAFDFB" rx="8" />`;
+
+    // Grid lines
+    [0, 5, 10, 15, 20, 25].forEach(tick => {
+      if (tick <= maxVal) {
+        const x = xPos(tick);
+        svg += `<line x1="${x}" y1="${marginTop}" x2="${x}" y2="${height - 28}" stroke="#E2E8F0" stroke-dasharray="3,3" />`;
+        svg += `<text x="${x}" y="${height - 10}" font-size="11" fill="#64748B" text-anchor="middle">${tick}</text>`;
+      }
+    });
+
+    // Bars
+    sorted.forEach((d, i) => {
+      const y = marginTop + i * rowH;
+      const barW = Math.max(2, (d.sig / maxVal) * plotW);
+      const fill = d.hitSig ? "#1F5F4A" : (d.hitHr ? "#D97706" : "#94A3B8");
+      const label = `${d.id} ${d.topic.length > 15 ? d.topic.slice(0, 15) + "…" : d.topic}`;
+      const valNote = d.hitHr && !d.hitSig
+        ? `${d.sig.toFixed(2)} (人權嚴重性 ${d.sev.toFixed(2)})`
+        : d.sig.toFixed(2);
+
+      svg += `<text x="${marginLeft - 8}" y="${y + 18}" font-size="11.5" fill="#1E293B" text-anchor="end">${escapeHtml(label)}</text>`;
+      svg += `<rect x="${marginLeft}" y="${y + 4}" width="${barW}" height="19" rx="3" fill="${fill}" />`;
+      svg += `<text x="${marginLeft + barW + 6}" y="${y + 18}" font-size="11" font-weight="600" fill="${d.isMaterial ? '#144032' : '#475569'}">${escapeHtml(valNote)}</text>`;
+    });
+
+    // Threshold line
+    const tx = xPos(thSig);
+    svg += `<line x1="${tx}" y1="${marginTop - 6}" x2="${tx}" y2="${height - 26}" stroke="#C62828" stroke-width="2" stroke-dasharray="5,4" />`;
+    svg += `<text x="${tx + 4}" y="${marginTop - 8}" font-size="11.5" font-weight="700" fill="#C62828">門檻 ${thSig}</text>`;
+    svg += `</svg>`;
+    document.getElementById("impactChartContainer").innerHTML = svg;
+  }
+
+  // 建立頁籤 2 內容索引列
+  function buildGriIndexRows() {
+    const year = document.getElementById("publishYear").value;
+    const evaluated = evaluateImpacts();
+    const merged = getMergedMaterialTopics(evaluated);
+    const rows = [];
+
+    GRI_2_LIST.forEach(([code, title]) => {
+      const nonOmittable = ["2-1", "2-2", "2-3", "2-4", "2-5"].includes(code);
+      rows.push({
+        key: `GRI2_${code}`,
+        standard: "GRI 2：一般揭露 2021",
+        disclosure: `${code} ${title}`,
+        nonOmittable
+      });
+    });
+
+    rows.push({
+      key: "GRI3_3-1",
+      standard: "GRI 3：重大主題 2021",
+      disclosure: "3-1 決定重大主題的流程",
+      nonOmittable: true
+    });
+    rows.push({
+      key: "GRI3_3-2",
+      standard: "GRI 3：重大主題 2021",
+      disclosure: "3-2 重大主題列表",
+      nonOmittable: true
+    });
+
+    merged.forEach(t => {
+      const cfg = TOPIC_DISCLOSURES[t.name];
+      if (!cfg) return;
+      const items = cfg.both ? cfg.both : (year === "2027" ? cfg[2027] : cfg[2026]);
+      items.forEach(([std, disc]) => {
+        rows.push({
+          key: `TOPIC_${t.name}_${std}_${disc}`,
+          standard: std,
+          disclosure: disc,
+          nonOmittable: false
+        });
+      });
+    });
+
+    return rows;
+  }
+
+  function validateGriRow(row, state) {
+    if (row.nonOmittable && state.omitted) {
+      return { valid: false, msg: "此項依 GRI 1 不可省略" };
+    }
+    if (state.omitted) {
+      if (!state.reason) return { valid: false, msg: "已勾選省略，須選省略理由" };
+      if (!state.explanation.trim()) return { valid: false, msg: "已勾選省略，須填省略說明" };
+      return { valid: true, msg: "通過（已具正當省略）" };
+    } else {
+      if (!state.location.trim()) return { valid: false, msg: "未省略須填寫位置（頁碼／網址）" };
+      return { valid: true, msg: "通過" };
+    }
+  }
+
+  function renderTab2() {
+    const rows = buildGriIndexRows();
+    const filterErr = document.getElementById("filterErrorsOnly").checked;
+    let issueCount = 0;
+
+    const evaluatedRows = rows.map((row, idx) => {
+      if (!indexUserInputs[row.key]) {
+        indexUserInputs[row.key] = { location: "", omitted: false, reason: "", explanation: "" };
+      }
+      const st = indexUserInputs[row.key];
+      if (row.nonOmittable && st.omitted) {
+        // 保留檢核提示
+      }
+      const check = validateGriRow(row, st);
+      if (!check.valid) issueCount++;
+      return { row, idx: idx + 1, st, check };
+    });
+
+    document.getElementById("indexCountBadge").textContent = `目前共 ${rows.length} 列`;
+    document.getElementById("kpiIndexIssues").textContent = issueCount;
+    document.getElementById("kpiIndexRowsSub").textContent = `共 ${rows.length} 列`;
+
+    // 更新使用聲明與頁首狀態
+    const box = document.getElementById("usageStatementBox");
+    const titleEl = document.getElementById("usageStatementTitle");
+    const textEl = document.getElementById("usageStatementText");
+    const kpiClaim = document.getElementById("kpiClaimStatus");
+    const kpiClaimSub = document.getElementById("kpiClaimSub");
+
+    if (issueCount === 0 && rows.length > 0) {
+      box.classList.remove("warn");
+      titleEl.textContent = "使用聲明：已依循 GRI 準則（in accordance）";
+      textEl.textContent = "「港岳精密扣件工業股份有限公司已依循 GRI 準則報導 2025 年 1 月 1 日至 2025 年 12 月 31 日期間之資訊。」（全部項目均通過檢核）";
+      kpiClaim.textContent = "依循";
+      kpiClaimSub.textContent = "內容索引全部通過檢核";
+    } else {
+      box.classList.add("warn");
+      titleEl.textContent = `使用聲明：參考 GRI 準則（with reference）— 尚有 ${issueCount} 項待修正`;
+      textEl.textContent = "「港岳精密扣件工業股份有限公司已參考 GRI 準則報導本 GRI 內容索引所引用之 2025 年 1 月 1 日至 2025 年 12 月 31 日期間之資訊。」";
+      kpiClaim.textContent = "參考";
+      kpiClaimSub.textContent = `尚有 ${issueCount} 列內容索引問題`;
+    }
+
+    const visibleRows = filterErr ? evaluatedRows.filter(x => !x.check.valid) : evaluatedRows;
+    const tbody = document.getElementById("griIndexBody");
+    tbody.innerHTML = visibleRows.map(({ row, idx, st, check }) => {
+      const reasonOptions = OMISSION_REASONS.map(r =>
+        `<option value="${r}" ${st.reason === r ? "selected" : ""}>${r || "— 請選擇 —"}</option>`
+      ).join("");
+      const badge = check.valid
+        ? `<span class="badge badge-green">${check.msg}</span>`
+        : `<span class="badge badge-red">${check.msg}</span>`;
+      const nonOmitTag = row.nonOmittable ? ` <span class="badge badge-amber">不可省略</span>` : "";
+
+      return `<tr class="${check.valid ? "" : "row-error"}">
+        <td>${idx}</td>
+        <td>${escapeHtml(row.standard)}</td>
+        <td>${escapeHtml(row.disclosure)}${nonOmitTag}</td>
+        <td><input type="text" class="gri-loc" data-key="${escapeHtml(row.key)}" placeholder="例：p.30" value="${escapeHtml(st.location)}" style="width:120px;"></td>
+        <td style="text-align:center;"><input type="checkbox" class="gri-omit" data-key="${escapeHtml(row.key)}" ${st.omitted ? "checked" : ""} ${row.nonOmittable ? "disabled title='GRI 1 規定不可省略'" : ""}></td>
+        <td><select class="gri-reason" data-key="${escapeHtml(row.key)}" ${st.omitted ? "" : "disabled"}>${reasonOptions}</select></td>
+        <td><input type="text" class="gri-exp" data-key="${escapeHtml(row.key)}" placeholder="省略說明" value="${escapeHtml(st.explanation)}" ${st.omitted ? "" : "disabled"} style="width:160px;"></td>
+        <td>${badge}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function fillSamplePages() {
+    const rows = buildGriIndexRows();
+    rows.forEach((r, i) => {
+      indexUserInputs[r.key] = {
+        location: `p.${Math.min(99, 6 + i)}`,
+        omitted: false,
+        reason: "",
+        explanation: ""
+      };
+    });
+    renderTab2();
+    showToast("已為全部列填入範例頁碼並完成依循檢核");
+  }
+
+  function exportGriCsv() {
+    const rows = buildGriIndexRows();
+    const year = document.getElementById("publishYear").value;
+    const header = ["編號", "GRI 準則", "揭露項目", "位置（頁碼／網址）", "是否省略", "省略理由", "省略說明", "檢核狀態"];
+    const lines = [header.join(",")];
+    rows.forEach((r, i) => {
+      const st = indexUserInputs[r.key] || { location: "", omitted: false, reason: "", explanation: "" };
+      const check = validateGriRow(r, st);
+      const cols = [
+        i + 1, r.standard, r.disclosure, st.location,
+        st.omitted ? "是" : "否", st.reason, st.explanation, check.msg
+      ].map(v => `"${String(v || "").replace(/"/g, '""')}"`);
+      lines.push(cols.join(","));
+    });
+    const csv = "\uFEFF" + lines.join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `港岳_GRI內容索引_${year}年版.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("已匯出 CSV 檔案");
+  }
+
+  // 頁籤 3：漂綠與數字檢查
+  function analyzeDraft(text) {
+    const findings = [];
+    const rules = [
+      {
+        regex: /100%\s*再生能源|100%/g,
+        level: "高",
+        category: "漂綠／絕對用語",
+        reason: "C10 能源表顯示再生能源僅占 2.05%，且 K5 §2.1 禁用無證據之「100%」絕對用語（K3 §4 亦列為重大不一致）。",
+        suggestion: "改為「岡山總廠屋頂太陽光電 2025 年自發自用 980,000 度，占總耗能 2.05%」。"
+      },
+      {
+        regex: /全面使用綠色能源|全面上線|全面/g,
+        level: "高",
+        category: "漂綠／絕對用語",
+        reason: "K5 §2.1 明確禁用無證據之「全面」等絕對用語；全公司 97.95% 仍為非再生能源。",
+        suggestion: "刪除「全面」，具體敘明太陽光電裝置量與實際發電自用度數。"
+      },
+      {
+        regex: /碳中和/g,
+        level: "高",
+        category: "漂綠／未經認證主張",
+        reason: "K5 §2.2 規定「碳中和」須依 ISO 14068-1 等標準並具完整佐證，港岳目前無任何碳中和宣告依據。",
+        suggestion: "刪除「碳中和產品」字樣，改為「持續配合客戶盤查產品碳足跡（PCF）」。"
+      },
+      {
+        regex: /2030\s*年達成淨零排放|達成淨零|邁向淨零|淨零/g,
+        level: "高",
+        category: "前瞻性漂綠",
+        reason: "C9 2025 回應紀錄顯示「尚未訂定正式減碳目標」，K5 §2.1 禁用無依據之「淨零」承諾，K3 §3 要求前瞻資訊須具董事會決議與預算佐證。",
+        suggestion: "改為「預計於 2027 年完成合併盤查後，提報董事會訂定減碳目標」。"
+      },
+      {
+        regex: /全年零職災|零職災/g,
+        level: "高",
+        category: "不實數據／平衡性",
+        reason: "與 C10 職業安全嚴重不符：2025 年員工可記錄職業傷害 6 件（損失 118 日）、非員工 1 件（損失 6 日）（K5 §2.1、§2.5）。",
+        suggestion: "照實揭露員工 6 件（6.87／百萬工時）與非員工 1 件（10.02／百萬工時）及改善行動。"
+      },
+      {
+        regex: /AA1000[^。\n]*完成驗證|已委託[^。\n]*完成驗證|並通過第三方查證/g,
+        level: "高",
+        category: "不實確信／保證宣稱",
+        reason: "C10 溫室氣體顯示外部查證尚未取得（委託辦理中），K5 §2.4 與 K2 §3.3 規定未取得時不得寫已通過驗證／查證。",
+        suggestion: "改為「目前尚未取得外部保證；2025 年度範疇一、二查證委託中，預計 2026 年第 4 季完成」。"
+      },
+      {
+        regex: /涵蓋[^。\n]*全體營運據點及子公司/g,
+        level: "高",
+        category: "報導邊界不實",
+        reason: "C1 §3 與 C10 說明載明 2025 年為個體盤查，越南平陽子公司尚未納入。",
+        suggestion: "改為「涵蓋母公司三據點（岡山、路竹、台北）；越南子公司 2025 年未納入，預計 2027 年合併盤查」。"
+      },
+      {
+        regex: /10,?909\.584/g,
+        level: "高",
+        category: "C10 數字錯誤（範疇二）",
+        reason: "10,909.584 為舊 113 年度係數（0.474）之試算值；依 114 年度係數 0.466，C10 正確範疇二為 10,725.456 tCO2e。",
+        suggestion: "修正為 10,725.456 tCO2e，並於 GRI 2-4 說明電力係數重編。"
+      },
+      {
+        regex: /15,?847\.659/g,
+        level: "高",
+        category: "C10 數字錯誤（合計）",
+        reason: "15,847.659 係以舊係數範疇二加總；C10 正確範疇一＋二合計為 15,663.531 tCO2e（且原稿 0.4294 強度即以此算出）。",
+        suggestion: "修正為 15,663.531 tCO2e。"
+      },
+      {
+        regex: /20\.5%/g,
+        level: "高",
+        category: "C10 數字錯誤（再生能源占比）",
+        reason: "C10 能源表顯示再生能源占比為 2.05%（3,528.0 ÷ 171,794.8 GJ），原稿誤大 10 倍。",
+        suggestion: "修正為 2.05%（K5 §1.2 再生能源占比保留小數 2 位）。"
+      },
+      {
+        regex: /減少\s*1\.7%/g,
+        level: "中",
+        category: "係數變動未區分（K5 §2.3）",
+        reason: "2024 年與 2025 年係數（0.474→0.466）及邊界不同；同係數下僅減 0.6%，帳面減量 66.6% 來自電力係數調降。",
+        suggestion: "依 K5 §1.4 改寫為「因係數與邊界不同，兩年度不可直接比較」，並區分實際減量與係數影響。"
+      },
+      {
+        regex: /最[佳高好大優]|第一品牌|全方位|卓越|致力於/g,
+        level: "低",
+        category: "K5 §2.1／§4 語氣與誇飾",
+        reason: "K5 規範禁用無證據之「最」「第一」，並應避免「卓越」「全方位」等形容詞堆疊。",
+        suggestion: "改以具體數字與可驗證事實陳述。"
+      }
+    ];
+
+    rules.forEach(r => {
+      let match;
+      while ((match = r.regex.exec(text)) !== null) {
+        // 擷取前後文
+        const start = Math.max(0, match.index - 12);
+        const end = Math.min(text.length, match.index + match[0].length + 14);
+        const snippet = text.slice(start, end).replace(/\n+/g, " ");
+        findings.push({
+          level: r.level,
+          category: r.category,
+          snippet: `…${snippet}…`,
+          reason: r.reason,
+          suggestion: r.suggestion
+        });
+      }
+    });
+
+    const rank = { "高": 0, "中": 1, "低": 2 };
+    findings.sort((a, b) => rank[a.level] - rank[b.level]);
+    return findings;
+  }
+
+  function renderTab3Check() {
+    const text = document.getElementById("draftTextarea").value;
+    const tbody = document.getElementById("checkResultsBody");
+    const badgesEl = document.getElementById("checkSummaryBadges");
+
+    if (!text.trim()) {
+      lastCheckIssuesCount = 0;
+      lastCheckExecuted = false;
+      document.getElementById("kpiGreenwashIssues").textContent = "0";
+      document.getElementById("kpiGreenwashSub").textContent = "尚未執行檢查";
+      badgesEl.innerHTML = "";
+      tbody.innerHTML = `<tr><td colspan="5" class="muted" style="text-align:center; padding:20px;">請貼上文字或點選「載入 C11 範例」後執行檢查。</td></tr>`;
+      return;
+    }
+
+    const findings = analyzeDraft(text);
+    lastCheckExecuted = true;
+    lastCheckIssuesCount = findings.length;
+
+    const hi = findings.filter(f => f.level === "高").length;
+    const mid = findings.filter(f => f.level === "中").length;
+    const lo = findings.filter(f => f.level === "低").length;
+
+    document.getElementById("kpiGreenwashIssues").textContent = findings.length;
+    document.getElementById("kpiGreenwashSub").textContent = `高風險 ${hi}／中 ${mid}／低 ${lo}`;
+    badgesEl.innerHTML = `
+      <span class="badge badge-red">高風險：${hi}</span>
+      <span class="badge badge-amber">中風險：${mid}</span>
+      <span class="badge badge-gray">低風險：${lo}</span>
+    `;
+
+    if (findings.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#1F5F4A; font-weight:600;">未偵測到 K5 禁用詞或 C10 數字矛盾。</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = findings.map(f => {
+      const bCls = f.level === "高" ? "badge-red" : (f.level === "中" ? "badge-amber" : "badge-gray");
+      return `<tr>
+        <td><span class="badge ${bCls}">${f.level}風險</span></td>
+        <td>${escapeHtml(f.category)}</td>
+        <td>${escapeHtml(f.snippet)}</td>
+        <td>${escapeHtml(f.reason)}</td>
+        <td>${escapeHtml(f.suggestion)}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // 事件綁定
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.tab).classList.add("active");
+    });
+  });
+
+  document.getElementById("thresholdSig").addEventListener("input", () => { renderTab1(); renderTab2(); });
+  document.getElementById("enableHrRule").addEventListener("change", () => { renderTab1(); renderTab2(); });
+  document.getElementById("thresholdHr").addEventListener("input", () => { renderTab1(); renderTab2(); });
+
+  document.getElementById("btnResetC8").addEventListener("click", () => {
+    impacts = JSON.parse(JSON.stringify(DEFAULT_C8));
+    document.getElementById("thresholdSig").value = 13;
+    document.getElementById("enableHrRule").checked = true;
+    document.getElementById("thresholdHr").value = 3.5;
+    renderTab1();
+    renderTab2();
+    showToast("已重設 C8 預設評分與門檻");
+  });
+
+  document.getElementById("c8TableBody").addEventListener("input", e => {
+    const t = e.target;
+    if (!t.classList.contains("c8-input")) return;
+    const id = t.dataset.id;
+    const field = t.dataset.field;
+    let val = parseFloat(t.value);
+    if (isNaN(val)) val = 1;
+    val = Math.max(1, Math.min(5, val));
+    const item = impacts.find(x => x.id === id);
+    if (item) {
+      item[field] = val;
+      renderTab1();
+      renderTab2();
+    }
+  });
+
+  document.getElementById("publishYear").addEventListener("change", renderTab2);
+  document.getElementById("filterErrorsOnly").addEventListener("change", renderTab2);
+  document.getElementById("btnFillSamplePages").addEventListener("click", fillSamplePages);
+  document.getElementById("btnExportCsv").addEventListener("click", exportGriCsv);
+
+  document.getElementById("griIndexBody").addEventListener("input", e => {
+    const t = e.target;
+    const key = t.dataset.key;
+    if (!key) return;
+    if (!indexUserInputs[key]) indexUserInputs[key] = { location: "", omitted: false, reason: "", explanation: "" };
+    if (t.classList.contains("gri-loc")) indexUserInputs[key].location = t.value;
+    if (t.classList.contains("gri-exp")) indexUserInputs[key].explanation = t.value;
+    renderTab2();
+  });
+
+  document.getElementById("griIndexBody").addEventListener("change", e => {
+    const t = e.target;
+    const key = t.dataset.key;
+    if (!key) return;
+    if (!indexUserInputs[key]) indexUserInputs[key] = { location: "", omitted: false, reason: "", explanation: "" };
+    if (t.classList.contains("gri-omit")) {
+      indexUserInputs[key].omitted = t.checked;
+      if (!t.checked) {
+        indexUserInputs[key].reason = "";
+        indexUserInputs[key].explanation = "";
+      }
+    }
+    if (t.classList.contains("gri-reason")) indexUserInputs[key].reason = t.value;
+    renderTab2();
+  });
+
+  document.getElementById("btnLoadC11").addEventListener("click", () => {
+    document.getElementById("draftTextarea").value = C11_SAMPLE;
+    renderTab3Check();
+    showToast("已載入 C11 範例並完成漂綠與數據檢查");
+  });
+
+  document.getElementById("btnClearDraft").addEventListener("click", () => {
+    document.getElementById("draftTextarea").value = "";
+    renderTab3Check();
+  });
+
+  document.getElementById("btnRunCheck").addEventListener("click", () => {
+    renderTab3Check();
+    showToast("檢查完成");
+  });
+
+  // 初始化
+  renderTab1();
+  renderTab2();
+})();
+</script>
+</body>
+</html>
